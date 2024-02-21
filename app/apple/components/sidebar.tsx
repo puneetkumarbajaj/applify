@@ -19,7 +19,7 @@ const playlists = ["80s rock", "90s rock", "00s rock", "10s rock", "20s rock"];
 
 export function Sidebar(props: ISidebarProps) {
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="w-full h-screen flex flex-col border-r-[0.5px] border-neutral-800">
       <div className="flex flex-col gap-7 py-2 px-7 justify-center">
         <div className="flex items-start justify-start ">
           <FaApple className="text-2xl" />
