@@ -1,10 +1,10 @@
 "use client";
-import { loginUrl } from "@/utils/spotify";
 import Image from "next/image";
 import React from "react";
 import { LoginWith } from "./components/login-with";
 import { PickYourUI } from "./components/pick-your-ui";
 import AppleMusic from "./apple/page";
+import Spotify from "./spotify/page";
 
 export default function Home() {
   const [isrc, setIsrc] = React.useState("");
@@ -40,7 +40,7 @@ async function handleSearch(isrc: string) {
 
   return (
     <div className="h-screen w-full">
-      <AppleMusic />
+      <Spotify />
     </div>
   )
 }

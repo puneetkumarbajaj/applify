@@ -1,5 +1,6 @@
 "use client";
 import * as React from 'react';
+import { SpotifyHome } from './components/home';
 
 export interface ISpotifyProps {
 }
@@ -7,8 +8,8 @@ export interface ISpotifyProps {
 export default class Spotify extends React.Component<ISpotifyProps> {
   public render() {
     return (
-      <div>
-        I am spotify home page
+      <div className='h-screen w-screen'>
+        <SpotifyHome />
       </div>
     );
   }
