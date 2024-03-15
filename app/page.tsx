@@ -40,7 +40,7 @@ async function handleSearch(isrc: string) {
 
   return (
     <div className="h-screen w-full">
-      <Spotify />
+      <LoginWith />
     </div>
   )
 }

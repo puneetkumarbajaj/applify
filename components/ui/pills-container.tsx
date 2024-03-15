@@ -1,7 +1,6 @@
 // Dependencies
 import React, { useEffect, useState, useRef } from "react";
 import { useSpring, animated, easings } from "react-spring";
-import "./tailwind.output.css";
 import Pill from "./pill";
 
 const SPACING_BETWEEN_PILLS = 8;

@@ -5,12 +5,13 @@ import { SpotifyHome } from './components/home';
 export interface ISpotifyProps {
 }
 
-export default class Spotify extends React.Component<ISpotifyProps> {
-  public render() {
-    return (
-      <div className='h-screen w-screen'>
+export function Spotify (props: ISpotifyProps) {
+
+  return (
+    <div className='h-screen w-screen'>
         <SpotifyHome />
-      </div>
-    );
-  }
+    </div>
+  );
 }
+
+export default Spotify;
