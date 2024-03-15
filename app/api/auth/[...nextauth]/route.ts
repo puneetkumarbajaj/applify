@@ -2,18 +2,6 @@ import SpotifyProvider from "next-auth/providers/spotify";
 import NextAuth from "next-auth/next";
 import fetch from "node-fetch";
 
-export interface CustomUser {
-    id: string;
-    email?: string;
-    name?: string;
-    
-  }
-  
-  export interface CustomSession {
-    user: CustomUser;
-    accessToken: string;
-  }
-  
 
 const scopes = [
     "user-read-email",
@@ -91,8 +79,6 @@ const handler = NextAuth({
                 token.id = user.id;
                 return token;
             }
-
-            console.log("JWT", token);
 
             //access token has not expired
             if(Date.now() < (token.accessTokenExpires as number)* 1000) {
