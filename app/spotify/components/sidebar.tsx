@@ -10,8 +10,8 @@ import PillContainer from '@/components/ui/pills-container';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ListItemType1 } from './ui/list-item-type-1';
 import { useSession } from 'next-auth/react';
-import { CustomSession } from '@/app/api/auth/[...nextauth]/route';
 import { cn } from '@/lib/utils';
+import { fetchPlaylists } from '@/app/api/Spotifymethods';
 
 export interface ISpotifySiderbarProps {
   view: string;
@@ -19,42 +19,20 @@ export interface ISpotifySiderbarProps {
   setGlobalPlaylistId: (id: string) => void;
 }
 
-interface Playlist {
-  name: string;
-  owner: {
-    display_name: string;
-  };
-  images: [{
-    url: string;
-  }];
-  id : string;
-}
 
 
 export function SpotifySiderbar (props: ISpotifySiderbarProps) {
 
   const {data:session} = useSession();
   const [x, setX] = React.useState("");
-  const [playlists, setPlaylists] = React.useState([])
+  const [playlists, setPlaylists] = React.useState<Playlist[]>([])
 
   React.useEffect(() => {
-    console.log('Effect running', { session });
-    const customSession = session as CustomSession | null;
     async function fetchData() {
       if (session && session.accessToken) {
-        console.log('Fetching data...');
-        setX(session.accessToken); // This seems to be unused elsewhere, consider removing if so
-        try {
-          const response = await fetch(`https://api.spotify.com/v1/users/${customSession?.user?.id}/playlists`, {
-            headers: {
-              Authorization: `Bearer ${session.accessToken}`,
-            },
-          });
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          const data = await response.json();
-          setPlaylists(data.items);
+        try{
+          const items = await fetchPlaylists(session.accessToken, session.user?.id as string);
+          setPlaylists(items);
         } catch (error) {
           console.error('Error fetching playlists:', error);
         }
@@ -67,13 +45,18 @@ export function SpotifySiderbar (props: ISpotifySiderbarProps) {
   return (
     <div className='max-h-full min-h-full w-full flex flex-col gap-2 mb-3 py-3 pl-3'>
       <div className='bg-neutral-900 h-[112px] w-full flex flex-col rounded-lg'>
-        <div className='h-[56px] w-full flex items-center justify-start p-5 gap-5 text-neutral-400 hover:text-white transition-colors cursor-pointer'>
+        <div 
+          className={cn('h-[56px] w-full flex items-center justify-start p-5 gap-5 text-neutral-400 hover:text-white transition-colors cursor-pointer',
+            props.view === 'home' ?  'text-white' : ''
+          )}
+          onClick={() => props.setView('home')}
+        >
           <GoHome className='text-2xl'/>
           <p className='font-semibold'>Home</p>
         </div>
         <div 
           className={cn('h-[56px] w-full flex items-center justify-start p-5 gap-5 text-neutral-400 hover:text-white transition-colors cursor-pointer',
-            props.view === 'search' ? 'bg-neutral-800 text-white' : ''
+            props.view === 'search' ? 'text-white' : ''
           )}
           onClick={() => props.setView('search')}
         >
@@ -106,16 +89,19 @@ export function SpotifySiderbar (props: ISpotifySiderbarProps) {
             </div>
             <div className="max-h-full min-h-full overflow-y-auto">
               {playlists.map((playlist: Playlist, index: number) => (
-                <div key={index} className='hover:bg-neutral-800'>
+                <div 
+                key={index} 
+                className='hover:bg-neutral-800'
+                onClick={() => {
+                  props.setGlobalPlaylistId(playlist.id);
+                  props.setView('playlist');
+                }}
+                >
                   <ListItemType1  
                     image={playlist.images[0].url} 
                     title={playlist.name} 
                     creator={playlist.owner.display_name} 
                     isPlaylist={true}
-                    onClick={() => {
-                      props.setGlobalPlaylistId(playlist.id);
-                      props.setView('playlist');
-                    }}
                   />
                 </div>
               ))
