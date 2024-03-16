@@ -8,6 +8,8 @@ import { FiClock } from "react-icons/fi";
 
 export interface IPlaylistViewProps {
     globalPlaylistId: string | null;
+    globalsetCurrentSongId: (id:string) => void;
+    globalsetIsPlaying: (isPlaying: boolean) => void;
 }
 
 export function PlaylistView (props: IPlaylistViewProps) {
@@ -66,7 +68,7 @@ export function PlaylistView (props: IPlaylistViewProps) {
 
 
   return (
-    <div className= 'h-full w-full flex flex-col m-3 rounded-lg bg-neutral-900 text-white'>
+    <div className= 'h-full w-full flex flex-col m-3 rounded-xl bg-neutral-900 text-white overflow-y-scroll'>
         <div
             style={{
                 background: `linear-gradient(to bottom, ${bgColor}, #171717)`
@@ -95,7 +97,7 @@ export function PlaylistView (props: IPlaylistViewProps) {
             </div>
             <RxDotsHorizontal className='text-3xl text-neutral-400' />
         </div>
-        <div className='py-4 px-10 overflow-y-scroll'>
+        <div className='py-4 px-10'>
             <table className='table-auto w-full'>
                 <thead>
                     <tr className='border-b-2 border-neutral-700'>
@@ -110,7 +112,14 @@ export function PlaylistView (props: IPlaylistViewProps) {
                 </thead>
                 <tbody>
                     {playlistData?.tracks.items.map((track, index) => (
-                        <tr key={index} className='hover:bg-neutral-800'>
+                        <tr 
+                            key={index} 
+                            className='hover:bg-neutral-800' 
+                            onClick={() => {
+                                props.globalsetCurrentSongId(track.track.id)
+                                props.globalsetIsPlaying(true)
+                            }}
+                        >
                             <td className='pt-2 text-xs pl-5'>{index + 1}</td>
                             <td className='flex p-2 pt-3'>
                                 <div className='mr-2'> 

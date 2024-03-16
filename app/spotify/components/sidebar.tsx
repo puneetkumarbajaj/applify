@@ -43,7 +43,7 @@ export function SpotifySiderbar (props: ISpotifySiderbarProps) {
   }, [session]);
 
   return (
-    <div className='max-h-full min-h-full w-full flex flex-col gap-2 mb-3 py-3 pl-3'>
+    <div className='max-h-full min-h-full w-full flex flex-col gap-2 pt-3 pl-3'>
       <div className='bg-neutral-900 h-[112px] w-full flex flex-col rounded-lg'>
         <div 
           className={cn('h-[56px] w-full flex items-center justify-start p-5 gap-5 text-neutral-400 hover:text-white transition-colors cursor-pointer',
@@ -64,7 +64,7 @@ export function SpotifySiderbar (props: ISpotifySiderbarProps) {
           <p className='font-semibold'>Search</p>
         </div>
       </div>
-      <div className='bg-neutral-900 flex flex-col flex-grow max-h-full rounded-lg'>
+      <div className='bg-neutral-900 flex flex-col flex-grow max-h-full rounded-lg overflow-y-auto'>
         <div className='w-full flex items-center justify-between p-5 gap-5 text-neutral-400 hover:text-white transition-colors cursor-pointer'>
             <div className='flex gap-5'>
                 <BiLibrary className='text-2xl'/>
@@ -78,7 +78,7 @@ export function SpotifySiderbar (props: ISpotifySiderbarProps) {
         <div className='w-full h-10'>
           <PillContainer titles={['Playlists', 'By Spotify', 'By You']} />
         </div>
-        <ScrollArea className='flex-grow my-1 overflow-y-auto max-h-full'>
+        <ScrollArea className='flex-grow overflow-y-auto max-h-full mt-1'>
           <div className='w-full px-2 gap-2 flex flex-col'>
             <div className='w-full flex justify-between px-4 text-neutral-400'>
               <CiSearch className='text-xl'/>
