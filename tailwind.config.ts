@@ -52,6 +52,7 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        spotify: "#1DB954"
       },
       borderRadius: {
         lg: "var(--radius)",

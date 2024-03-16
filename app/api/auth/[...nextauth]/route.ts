@@ -80,10 +80,13 @@ const handler = NextAuth({
                 return token;
             }
 
+            console.log("jwt", token);
+
             //access token has not expired
             if(Date.now() < (token.accessTokenExpires as number)* 1000) {
                 return token;
             }
+
 
             //access token has expired
             return refreshAccessToken(token);
@@ -92,7 +95,7 @@ const handler = NextAuth({
         async session({session, token, user}) {
             // send properties to the client, like an access_token from the token
             session.accessToken = token.accessToken as string;
-            session.user = {id: token.id as string, name: token.name as string, email: token.email as string, image: token.image as string};
+            session.user = {id: token.id as string, name: token.name as string, email: token.email as string, image: token.picture as string};
             return session;
         }
     },
