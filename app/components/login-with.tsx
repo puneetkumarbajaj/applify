@@ -14,7 +14,7 @@ export function LoginWith (props: ILoginWithProps) {
         <FaSpotify className='w-6 h-6' />
         <span className='ml-2'>Login with Spotify</span>
       </Button>
-      <Button>
+      <Button onClick={()=> signIn('apple', {callbackUrl: "/apple"})}>
         <SiApplemusic className='w-6 h-6' />
         <span className='ml-2'>Login with Apple Music</span>
       </Button>
