@@ -63,10 +63,6 @@ const handler = NextAuth({
         authorization: LOGIN_URL || "",
 
     }),
-    AppleProvider({
-        clientId: process.env.APPLE_CLIENT_ID || "",
-        clientSecret: process.env.APPLE_CLIENT_SECRET || "",
-    }),
     ],
     pages: {
         signIn: "http://localhost:3000/",
@@ -74,17 +70,6 @@ const handler = NextAuth({
         error: "/auth/error",
         verifyRequest: "/auth/verify-request",
     },
-    cookies: {
-        pkceCodeVerifier: {
-          name: "next-auth.pkce.code_verifier",
-          options: {
-            httpOnly: true,
-            sameSite: "none",
-            path: "/",
-            secure: true,
-          },
-        },
-      },
     
     callbacks: {
         async jwt({token, user, account}){
