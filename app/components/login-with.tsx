@@ -3,23 +3,37 @@ import { signIn } from 'next-auth/react';
 import * as React from 'react';
 import { FaSpotify } from "react-icons/fa";
 import { SiApplemusic } from "react-icons/si";
-import { initializeMusicKit, getMusicKitInstance } from '../api/musickit';
+import { initializeMusicKit, getMusicKitInstance, authorizeMusicKit } from '../api/musickit';
+import {useRouter} from 'next/router';
 
 export interface ILoginWithProps {
 }
 
 export function LoginWith (props: ILoginWithProps) {
+  const router = useRouter();
+  const [isInitialized, setIsInitialized] = React.useState(false);
 
   React.useEffect(() => {
     const developerToken: string = process.env.APPLE_SECRET as string;
-    initializeMusicKit(developerToken).then(() => {
-      const music = getMusicKitInstance();
-      if (music) {
-        console.log(music.isAuthorized);
-      }
-    });
+    initializeMusicKit(developerToken)
+      .then(() => setIsInitialized(true))
+      .catch((error) => console.error(error));
   }, []);
 
+  const handleAuthorize = async () => {
+    const router = useRouter();
+    if (isInitialized) {
+      await authorizeMusicKit();
+      const musicInstance = getMusicKitInstance();
+      if (musicInstance?.isAuthorized) {
+        router.push('/apple');
+      } else {
+        console.log('User is not authorized');
+      }
+    } else {
+      console.log('MusicKit is not initialized');
+    }
+  }
 
   return (
     <div className='h-full w-full flex items-center justify-center gap-16'>
@@ -27,7 +41,7 @@ export function LoginWith (props: ILoginWithProps) {
         <FaSpotify className='w-6 h-6' />
         <span className='ml-2'>Login with Spotify</span>
       </Button>
-      <Button onClick={()=> signIn('apple', {callbackUrl: "/apple"})}>
+      <Button onClick={handleAuthorize}>
         <SiApplemusic className='w-6 h-6' />
         <span className='ml-2'>Login with Apple Music</span>
       </Button>

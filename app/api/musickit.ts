@@ -2,8 +2,8 @@
 
 let musicInstance: MusicKit.MusicKitInstance | null = null;
 
-// Initialize MusicKit
-export const initializeMusicKit = async (developerToken: string): Promise<void> => {
+// Initialize MusicKit without automatically authorizing the user
+export const initializeMusicKit = async (developerToken: string): Promise<MusicKit.MusicKitInstance | null> => {
   if (window.MusicKit) {
     musicInstance = window.MusicKit.configure({
       developerToken,
@@ -12,15 +12,23 @@ export const initializeMusicKit = async (developerToken: string): Promise<void> 
         build: '0.1',
       },
     });
+    return musicInstance;
+  }
+  return null;
+};
+
+// Function to trigger the authorization process
+export const authorizeMusicKit = async (): Promise<void> => {
+  if (!musicInstance) {
+    console.error('MusicKit is not initialized');
+    return;
+  }
+  try {
     await musicInstance.authorize();
+    console.log('User is authorized:', musicInstance.isAuthorized);
+  } catch (error) {
+    console.error('Error authorizing MusicKit:', error);
   }
 };
 
-// Get the MusicKit Instance
-export const getMusicKitInstance = (): MusicKit.MusicKitInstance | null => {
-  if (!musicInstance) {
-    console.error('MusicKit is not initialized');
-    return null;
-  }
-  return musicInstance;
-};
+export const getMusicKitInstance = (): MusicKit.MusicKitInstance | null => musicInstance;
