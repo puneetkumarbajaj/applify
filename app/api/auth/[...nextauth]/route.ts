@@ -1,7 +1,7 @@
 import SpotifyProvider from "next-auth/providers/spotify";
 import NextAuth from "next-auth/next";
 import fetch from "node-fetch";
-
+import AppleProvider from "next-auth/providers/apple";
 
 const scopes = [
     "user-read-email",
@@ -62,7 +62,11 @@ const handler = NextAuth({
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET || "",
         authorization: LOGIN_URL || "",
 
-    })
+    }),
+    AppleProvider({
+        clientId: process.env.APPLE_CLIENT_ID || "",
+        clientSecret: process.env.APPLE_CLIENT_SECRET || "",
+    }),
     ],
     pages: {
         signIn: "http://localhost:3000/",

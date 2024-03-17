@@ -1,3 +1,5 @@
+
+/* eslint-disable */
 "use client";
 import * as React from 'react';
 
@@ -88,9 +90,9 @@ export function SpotifySiderbar (props: ISpotifySiderbarProps) {
               </div>
             </div>
             <div className="max-h-full min-h-full overflow-y-auto">
-              {playlists.map((playlist: Playlist, index: number) => (
+              {playlists.map((playlist: Playlist) => (
                 <div 
-                key={index} 
+                key={playlist.id} 
                 className='hover:bg-neutral-800'
                 onClick={() => {
                   props.setGlobalPlaylistId(playlist.id);

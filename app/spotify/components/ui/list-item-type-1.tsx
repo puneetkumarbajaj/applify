@@ -15,7 +15,7 @@ export function ListItemType1 (props: IListItemType1Props) {
   return (
     <div className={cn("w-full px-4 py-2", 
         props.isPlaylist ? "h-[64px] cursor-pointer" : "h-[54px] justify-between"
-    )} 
+    )}
     >
       <div className='flex items-center gap-3'>
         <img src={props.image} alt="playlist" className={cn(props.isPlaylist ? "h-[48px] w-[48px]" : "h-[40px] w-[40px]")} />
