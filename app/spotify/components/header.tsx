@@ -5,6 +5,7 @@ import { GoBell } from "react-icons/go";
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useSession } from 'next-auth/react';
 import { AvatarImage } from '@radix-ui/react-avatar';
+import { TransferMusic } from '@/app/components/transferMusic';
 
 export interface IHeaderProps {
 }
@@ -21,13 +22,16 @@ export function Header (props: IHeaderProps) {
             <MdOutlineArrowForwardIos className='text-white' />
         </div>
       </div>
-      <div className='flex'>
+      <div className='flex gap-2'>
+        <div className='rounded-full bg-black bg-opacity-50 w-8 h-8 flex items-center justify-center'>
+            <TransferMusic session={session}/>
+        </div>
         <div className='rounded-full bg-black bg-opacity-50 w-8 h-8 flex items-center justify-center'>
             <GoBell className='text-white' />
         </div>
         <div className='flex items-center justify-center'>
             <Avatar>
-                <AvatarImage src={session?.user?.image as string} alt="avatar" />
+                <AvatarImage src={session?.user?.image as string} alt="avatar"/>
                 <AvatarFallback/>
             </Avatar>
         </div>

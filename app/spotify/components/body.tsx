@@ -39,8 +39,6 @@ export function Body (props: IBodyProps) {
               globalPlaylistId={globalPlaylistId}
               globalsetCurrentSongId={globalSetCurrentSongId as (id: string | null) => void}
               globalsetIsPlaying={globalSetIsPlaying as (isPlaying: boolean) => void}
-              globalsetIsPlaying={globalSetIsPlaying as (isPlaying: boolean) => void}
-              globalIsPlaying={globalIsPlaying}
             />
           }
           console.log(view);
@@ -54,6 +52,8 @@ export function Body (props: IBodyProps) {
         <Player 
           globalCurrentSongId={globalCurrentSongId}
           globalsetCurrentSongId={globalSetCurrentSongId as (id: string | null) => void}
+          globalsetIsPlaying={globalSetIsPlaying as (isPlaying: boolean) => void}
+          globalIsPlaying = {globalIsPlaying}
         />
       </div>
     </div>

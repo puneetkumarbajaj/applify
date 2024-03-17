@@ -10,6 +10,7 @@ import { FaComputer } from "react-icons/fa6";
 import { HiOutlineVolumeUp } from "react-icons/hi";
 import { Slider } from '@/components/ui/slider';
 import { useSession } from 'next-auth/react';
+import { fetchSongData, getCurrentlyPlaying } from '@/app/api/Spotifymethods';
 
 
 export interface IPlayerProps {
@@ -24,41 +25,22 @@ export function Player (props: IPlayerProps) {
   const {data:session} = useSession();
   const [songInfo, setSongInfo] = React.useState<Track | null>(null);
 
-  async function fetchSongData(trackId: String){
-    if(trackId){
-      const res = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`
-        }
-      });
-      const data = await res.json();
-      setSongInfo(data);
-    }
-  }
-
-  async function getCurrentlyPlaying(){
-    const res = await fetch(`https://api.spotify.com/v1/me/player/currently-playing`, {
-      headers: {
-        Authorization: `Bearer ${session?.accessToken}`
-      }
-    });
-    const data = await res.json();
-    return data;
-  }
 
   React.useEffect(() => {
     async function fetchData() {
       if (session && session.accessToken) {
         if (!props.globalCurrentSongId) {
-          const data = await getCurrentlyPlaying();
+          const data = await getCurrentlyPlaying(session.accessToken);
           if(data.item){
             props.globalsetCurrentSongId(data.item.id);
-            await fetchSongData(data.item.id);
-            
           }
+          if (data.is_playing) {
+            props.globalsetIsPlaying(true);
+          }
+          setSongInfo(await fetchSongData(session.accessToken, data.item.id));
         }
         else {
-          await fetchSongData(props.globalCurrentSongId);
+          setSongInfo(await fetchSongData(session.accessToken, props.globalCurrentSongId));
         }
       }
     }
@@ -79,7 +61,9 @@ export function Player (props: IPlayerProps) {
       </div>
       <div className="flex flex-col gap-3 justify-center items-center text-lg">
         <div className='flex items-center justify-center gap-3'>
-          <LuShuffle className='text-white' />
+          <LuShuffle 
+            className='text-white'  
+          />
           <GiPreviousButton className='text-white' />
           <div className="rounded-full bg-white w-8 h-8 flex items-center justify-center">
             <IoMdPlay className='text-black' />
@@ -96,7 +80,6 @@ export function Player (props: IPlayerProps) {
         </div>
       </div>
       <div className='flex gap-3 justify-center items-center'>
-        <TbMicrophone2 className='text-white text-5xl' />
         <HiOutlineQueueList className='text-white text-5xl' />
         <FaComputer className='text-white text-5xl' />
         <HiOutlineVolumeUp className='text-white text-5xl' />

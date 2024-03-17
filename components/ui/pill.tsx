@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSpring, animated, easings } from "react-spring";
-import "./tailwind.output.css";
 
 interface PillProps {
   title: string;

@@ -30,6 +30,67 @@ export async function fetchPlaylistData(accessToken: string, playlistId: string)
         return data;
     }   catch (error) {
         console.error('Error fetching playlist:', error);
-        throw error; // Re-throw the error if you want calling code to handle it
+        throw error;
     }
+}
+
+export async function fetchSongData(accessToken: string, trackId: string): Promise<Track> {
+    try{
+        const res = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+            headers: {
+            Authorization: `Bearer ${accessToken}`
+            }
+        });
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching song:', error);
+        throw error; 
+    }
+}
+
+export async function getCurrentlyPlaying(accessToken: string) {
+    const res = await fetch(`https://api.spotify.com/v1/me/player/currently-playing`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    const data = await res.json();
+    return data;
+}
+
+export async function playSong(accessToken: string, deviceId: string, uri: string) {
+    const res = await fetch(`https://api.spotify.com/v1/me/player/play`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        device_id: deviceId
+      },
+      body: JSON.stringify({ uris: [uri] })
+    });
+    return res;
+}
+
+export async function getIsrc(accessToken: string, trackId: string) {
+    const res = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    const data = await res.json();
+    return data.external_ids.isrc;
+}
+
+export async function getIsrcOfPlaylist(accessToken: string, playlistId: string) {
+    const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    const data = await res.json();
+    return data.tracks.items.map((item: any) => item.track.external_ids.isrc);
 }
