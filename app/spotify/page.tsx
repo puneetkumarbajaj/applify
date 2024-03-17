@@ -2,10 +2,7 @@
 import * as React from 'react';
 import { Body } from './components/body';
 
-export interface ISpotifyProps {
-}
-
-export function Spotify (props: ISpotifyProps) {
+export default function Spotify () {
 
   return (
     <div className='h-screen w-screen'>
@@ -13,5 +10,3 @@ export function Spotify (props: ISpotifyProps) {
     </div>
   );
 }
-
-export default Spotify;

@@ -2,15 +2,11 @@
 import * as React from 'react';
 import { Home } from './components/home';
 
-export interface IAppleMusicProps {
-}
 
-export default class AppleMusic extends React.Component<IAppleMusicProps> {
-  public render() {
+export default function AppleMusic() {
     return (
       <div>
         <Home/>
       </div>
     );
-  }
 }
