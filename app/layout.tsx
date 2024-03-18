@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "./components/SessionWrapper";
 import Head from "next/head";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,7 @@ export default function RootLayout({
     <SessionWrapper>
       <html lang="en">
         <Head>
-          <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js" async></script>
+          <Script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js" strategy="beforeInteractive"></Script>
         </Head>
         <body className={inter.className}>{children}</body>
       </html>
