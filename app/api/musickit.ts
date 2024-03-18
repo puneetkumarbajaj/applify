@@ -1,6 +1,6 @@
 // utils/musickit.ts
 
-let musicInstance: MusicKit.MusicKitInstance | null = null;
+let musicInstance: MusicKit.MusicKitInstance | null;
 
 // Initialize MusicKit without automatically authorizing the user
 export const initializeMusicKit = async (developerToken: string): Promise<MusicKit.MusicKitInstance | null> => {
@@ -20,7 +20,7 @@ export const initializeMusicKit = async (developerToken: string): Promise<MusicK
 // Function to trigger the authorization process
 export const authorizeMusicKit = async (): Promise<void> => {
   if (!musicInstance) {
-    console.error('MusicKit is not initialized');
+    console.error('MusicKit is not initialized. error from musickit.ts: authorizeMusicKit()');
     return;
   }
   try {

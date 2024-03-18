@@ -23,12 +23,12 @@ export function LoginWith (props: ILoginWithProps) {
       await authorizeMusicKit();
       const musicInstance = getMusicKitInstance();
       if (musicInstance?.isAuthorized) {
-        console.log('User is authorized');
+        console.log('User is authorized. error from login-with.tsx: handleAuthorize()');
       } else {
         console.log('User is not authorized');
       }
     } else {
-      console.log('MusicKit is not initialized');
+      console.log('MusicKit is not initialized. error from login-with.tsx: handleAuthorize()');
     }
   }
 
