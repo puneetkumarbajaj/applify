@@ -4,11 +4,13 @@ import * as React from 'react';
 import { FaSpotify } from "react-icons/fa";
 import { SiApplemusic } from "react-icons/si";
 import { initializeMusicKit, getMusicKitInstance, authorizeMusicKit } from '../api/musickit';
+import {useRouter} from 'next/router';
 
 export interface ILoginWithProps {
 }
 
 export function LoginWith (props: ILoginWithProps) {
+  const router = useRouter();
   const [isInitialized, setIsInitialized] = React.useState(false);
 
   React.useEffect(() => {
@@ -19,11 +21,12 @@ export function LoginWith (props: ILoginWithProps) {
   }, []);
 
   const handleAuthorize = async () => {
+    const router = useRouter();
     if (isInitialized) {
       await authorizeMusicKit();
       const musicInstance = getMusicKitInstance();
       if (musicInstance?.isAuthorized) {
-        console.log('User is authorized');
+        router.push('/apple');
       } else {
         console.log('User is not authorized');
       }
