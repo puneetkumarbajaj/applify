@@ -5,17 +5,26 @@ let musicInstance: MusicKit.MusicKitInstance | null;
 // Initialize MusicKit without automatically authorizing the user
 export const initializeMusicKit = async (developerToken: string): Promise<MusicKit.MusicKitInstance | null> => {
   if (window.MusicKit) {
-    musicInstance = window.MusicKit.configure({
-      developerToken,
-      app: {
-        name: 'Applify',
-        build: '0.1',
-      },
-    });
-    return musicInstance;
+    try {
+      musicInstance = window.MusicKit.configure({
+        developerToken,
+        app: {
+          name: 'Applify',
+          build: '0.1',
+        },
+      });
+      console.log('MusicKit initialized successfully. message from musickit.ts: initializeMusicKit()');
+      return musicInstance;
+    } catch (error) {
+      console.error('MusicKit initialization failed:', error);
+      return null;
+    }
+  } else {
+    console.log('MusicKit SDK not loaded. error from musickit.ts: initializeMusicKit()');
+    return null;
   }
-  return null;
 };
+
 
 // Function to trigger the authorization process
 export const authorizeMusicKit = async (): Promise<void> => {
