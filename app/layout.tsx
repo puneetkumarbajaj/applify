@@ -20,7 +20,7 @@ export default function RootLayout({
     <SessionWrapper>
       <html lang="en">
         <Head>
-          <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script>
+          <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js" async></script>
         </Head>
         <body className={inter.className}>{children}</body>
       </html>
