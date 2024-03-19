@@ -41,3 +41,4 @@ export const authorizeMusicKit = async (): Promise<void> => {
 };
 
 export const getMusicKitInstance = (): MusicKit.MusicKitInstance | null => musicInstance;
+

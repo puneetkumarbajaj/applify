@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Home } from './components/home';
 
 
-export default function AppleMusic() {
+export default function Apple() {
     return (
-      <div>
+      <div className='h-screen w-screen'>
         <Home/>
       </div>
     );

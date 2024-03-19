@@ -5,7 +5,7 @@ import * as React from 'react';
 import { FaSpotify } from "react-icons/fa";
 import { SiApplemusic } from "react-icons/si";
 import { initializeMusicKit, getMusicKitInstance, authorizeMusicKit } from '../api/musickit';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export interface ILoginWithProps {
 }

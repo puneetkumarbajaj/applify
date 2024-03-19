@@ -11,13 +11,25 @@ import { TbClockHour9, TbPlaylist } from "react-icons/tb";
 import { LiaMicrophoneAltSolid } from "react-icons/lia";
 import { IoIosAlbums, IoIosMusicalNote, IoIosRadio  } from "react-icons/io";
 import { BsFilePerson, BsGrid3X3Gap } from "react-icons/bs";
+import { getMusicKitInstance } from "@/app/api/musickit";
 
 
 export interface ISidebarProps {}
 
-const playlists = ["80s rock", "90s rock", "00s rock", "10s rock", "20s rock"];
-
 export function Sidebar(props: ISidebarProps) {
+const [playlists, setPlaylists] = React.useState<MusicKit.Playlists[]>([]); // Update the type of setPlaylists
+const music = getMusicKitInstance();
+
+React.useEffect(() => {
+  const fetchData = async () => {
+    const data = await music?.api.library.playlists(null);
+    if (data) {
+      setPlaylists(data);
+    }
+  };
+
+  fetchData();
+}, []); // Add an empty dependency array to useEffect
   return (
     <div className="w-full h-screen flex flex-col border-r-[0.5px] border-neutral-800">
       <div className="flex flex-col gap-7 py-2 px-7 justify-center">
@@ -73,16 +85,16 @@ export function Sidebar(props: ISidebarProps) {
         </div>
         <Separator />
         <div>
+          <div className="flex items-center gap-4 p-4">
+            <BsGrid3X3Gap className="text-2xl" />
+            <div>All Playlists</div>
+          </div>
+          {playlists.map((playlist) => (
             <div className="flex items-center gap-4 p-4">
-                <BsGrid3X3Gap className="text-2xl" />
-                <div>All Playlists</div>
+              <TbPlaylist className="text-2xl" />
+              <div>{String(playlist)}</div> // Convert playlist to string
             </div>
-            {playlists.map((playlist) => (
-                <div className="flex items-center gap-4 p-4">
-                    <TbPlaylist className="text-2xl" />
-                    <div>{playlist}</div>
-                </div>
-            ))}
+          ))}
         </div>
       </ScrollArea>
     </div>
