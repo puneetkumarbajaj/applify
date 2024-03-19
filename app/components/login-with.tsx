@@ -1,3 +1,4 @@
+"use client";
 import { Button } from '@/components/ui/button';
 import { signIn } from 'next-auth/react';
 import * as React from 'react';
@@ -12,7 +13,7 @@ export function LoginWith (props: ILoginWithProps) {
   const [isInitialized, setIsInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    const developerToken: string = process.env.APPLE_SECRET as string;
+    const developerToken: string = process.env.NEXT_PUBLIC_APPLE_SECRET?.toString() || "";
     initializeMusicKit(developerToken)
       .then(() => setIsInitialized(true))
       .catch((error) => console.error(error));
