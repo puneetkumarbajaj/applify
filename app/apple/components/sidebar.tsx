@@ -18,10 +18,11 @@ export interface ISidebarProps {}
 
 export function Sidebar(props: ISidebarProps) {
 const [playlists, setPlaylists] = React.useState<MusicKit.Playlists[]>([]); // Update the type of setPlaylists
-const music = getMusicKitInstance();
+let music : MusicKit.MusicKitInstance | null// Update the type of music
 
 React.useEffect(() => {
   const fetchData = async () => {
+    music = getMusicKitInstance();
     const data = await music?.api.library.playlists(null);
     if (data) {
       setPlaylists(data);
@@ -92,7 +93,7 @@ React.useEffect(() => {
           {playlists.map((playlist) => (
             <div className="flex items-center gap-4 p-4">
               <TbPlaylist className="text-2xl" />
-              <div>{String(playlist)}</div> // Convert playlist to string
+              <div>{String(playlist)}</div>
             </div>
           ))}
         </div>
