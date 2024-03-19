@@ -12,7 +12,7 @@ export function LoginWith (props: ILoginWithProps) {
   const [isInitialized, setIsInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    const developerToken: string = process.env.APPLE_SECRET as string;
+    const developerToken = process.env.APPLE_SECRET;
     // initializeMusicKit(developerToken)
     //   .then(() => setIsInitialized(true))
     //   .catch((error) => console.error(error));
@@ -25,6 +25,8 @@ export function LoginWith (props: ILoginWithProps) {
           build: '0.1',
         }
       });
+      setIsInitialized(true);
+      console.log('MusicKit loaded. message from login-with.tsx: useEffect()');
     });
   }, []);
 
