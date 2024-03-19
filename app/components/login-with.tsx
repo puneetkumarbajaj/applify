@@ -14,6 +14,7 @@ export function LoginWith (props: ILoginWithProps) {
 
   React.useEffect(() => {
     const developerToken: string = process.env.NEXT_PUBLIC_APPLE_SECRET?.toString() || "";
+    console.log(developerToken);
     initializeMusicKit(developerToken)
       .then(() => setIsInitialized(true))
       .catch((error) => console.error(error));
