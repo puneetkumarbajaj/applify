@@ -12,22 +12,10 @@ export function LoginWith (props: ILoginWithProps) {
   const [isInitialized, setIsInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    const developerToken = process.env.APPLE_SECRET;
-    // initializeMusicKit(developerToken)
-    //   .then(() => setIsInitialized(true))
-    //   .catch((error) => console.error(error));
-
-    document.addEventListener('musickitloaded', function() {
-      MusicKit.configure({
-        developerToken: developerToken,
-        app: {
-          name: 'Applify',
-          build: '0.1',
-        }
-      });
-      setIsInitialized(true);
-      console.log('MusicKit loaded. message from login-with.tsx: useEffect()');
-    });
+    const developerToken: string = process.env.APPLE_SECRET as string;
+    initializeMusicKit(developerToken)
+      .then(() => setIsInitialized(true))
+      .catch((error) => console.error(error));
   }, []);
 
   const handleAuthorize = async () => {
@@ -50,7 +38,7 @@ export function LoginWith (props: ILoginWithProps) {
         <FaSpotify className='w-6 h-6' />
         <span className='ml-2'>Login with Spotify</span>
       </Button>
-      <Button id='apple-music-authorize'>
+      <Button onClick={handleAuthorize}>
         <SiApplemusic className='w-6 h-6' />
         <span className='ml-2'>Login with Apple Music</span>
       </Button>
