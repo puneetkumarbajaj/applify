@@ -5,12 +5,14 @@ import * as React from 'react';
 import { FaSpotify } from "react-icons/fa";
 import { SiApplemusic } from "react-icons/si";
 import { initializeMusicKit, getMusicKitInstance, authorizeMusicKit } from '../api/musickit';
+import { useRouter } from 'next/router';
 
 export interface ILoginWithProps {
 }
 
 export function LoginWith (props: ILoginWithProps) {
   const [isInitialized, setIsInitialized] = React.useState(false);
+  const router = useRouter();
 
   React.useEffect(() => {
     const developerToken: string = process.env.NEXT_PUBLIC_APPLE_SECRET?.toString() || "";
@@ -25,7 +27,7 @@ export function LoginWith (props: ILoginWithProps) {
       await authorizeMusicKit();
       const musicInstance = getMusicKitInstance();
       if (musicInstance?.isAuthorized) {
-        console.log('User is authorized. error from login-with.tsx: handleAuthorize()');
+        router.push('/apple');
       } else {
         console.log('User is not authorized');
       }
