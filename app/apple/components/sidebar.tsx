@@ -14,7 +14,11 @@ import { BsFilePerson, BsGrid3X3Gap } from "react-icons/bs";
 import { getMusicKitInstance } from "@/app/api/musickit";
 
 
-export interface ISidebarProps {}
+export interface ISidebarProps {
+  view: string;
+  setView: (view: string) => void;
+  setGlobalPlaylistId: (id: string) => void;
+}
 
 export function Sidebar(props: ISidebarProps) {
 const [playlists, setPlaylists] = React.useState<MusicKit.Playlists[]>([]); // Update the type of setPlaylists
@@ -23,7 +27,7 @@ let music : MusicKit.MusicKitInstance | null// Update the type of music
 React.useEffect(() => {
   const fetchData = async () => {
     music = getMusicKitInstance();
-    const data = await music?.api.library.playlists(null);
+    const data = await music?.api.library.playlists(null, { offset: 100});
     if (data) {
       setPlaylists(data);
       console.log(data);
@@ -92,7 +96,9 @@ React.useEffect(() => {
             <div>All Playlists</div>
           </div>
           {playlists.map((playlist) => (
-            <div className="flex items-center gap-4 p-4">
+            <div className="flex items-center gap-4 p-4"
+              onClick={()=>{props.setGlobalPlaylistId(playlist.id); props.setView('playlist');}}
+            >
               <TbPlaylist className="text-2xl" />
               <div>{playlist.attributes?.name.toString()}</div>
             </div>
