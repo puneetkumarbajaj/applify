@@ -26,6 +26,7 @@ React.useEffect(() => {
     const data = await music?.api.library.playlists(null);
     if (data) {
       setPlaylists(data);
+      console.log(data);
     }
   };
 
@@ -93,7 +94,7 @@ React.useEffect(() => {
           {playlists.map((playlist) => (
             <div className="flex items-center gap-4 p-4">
               <TbPlaylist className="text-2xl" />
-              <div>{String(playlist)}</div>
+              <div>{playlist.attributes?.name.toString()}</div>
             </div>
           ))}
         </div>
