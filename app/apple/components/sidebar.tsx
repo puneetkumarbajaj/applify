@@ -27,7 +27,7 @@ let music : MusicKit.MusicKitInstance | null// Update the type of music
 React.useEffect(() => {
   const fetchData = async () => {
     music = getMusicKitInstance();
-    const data = await music?.api.library.playlists(null, { offset: 100});
+    const data = await music?.api.library.playlists(null);
     if (data) {
       setPlaylists(data);
       console.log(data);
