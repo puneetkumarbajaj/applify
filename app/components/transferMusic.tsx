@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { IoIosAdd } from "react-icons/io";
 import { getIsrc, getIsrcOfPlaylist } from '../api/Spotifymethods';
 import { Session } from 'next-auth';
+import { getMusicKitInstance } from '../api/musickit';
 
 export interface ITransferMusicProps {
     session?: Session | null;
@@ -22,9 +23,9 @@ export interface ITransferMusicProps {
 export function TransferMusic (props: ITransferMusicProps) {
     const [isrcArray, setIsrcArray] = React.useState([]);
     const [playlistLink, setPlaylistLink] = React.useState('');
-    const [songs, setSongs] = React.useState<MusicKit.Songs[]>([]);
+    const [songs, setSongs] = React.useState<(MusicKit.Songs | undefined)[]>([]);
 
-    const musicKit = MusicKit.getInstance();
+    const musicKit = getMusicKitInstance();
     
     async function getIsrcArray(playlistLink: string) {
         const playlistId = playlistLink?.split('playlist/')[1].split('?')[0];
@@ -38,13 +39,13 @@ export function TransferMusic (props: ITransferMusicProps) {
             try {
                 // Convert ISRCs to MusicKit catalog search queries
                 const promises = isrcArray.map(isrc =>
-                    musicKit.api.songs(['?filter[isrc]=' + isrc])
+                    musicKit?.api.songs(['?filter[isrc]=' + isrc])
                 );
                 const results = await Promise.all(promises);
                 
                 // Process results
                 const fetchedSongs = results.flat(); // Assuming each promise resolves to an array of songs
-                setSongs(fetchedSongs);
+                setSongs(fetchedSongs ?? []);
             } catch (error) {
                 console.error("Error fetching songs by ISRC:", error);
             }
@@ -56,7 +57,7 @@ export function TransferMusic (props: ITransferMusicProps) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Music-User-Token': musicKit.musicUserToken,
+                    'Music-User-Token': musicKit?.musicUserToken ?? '',
                 },
                 body: JSON.stringify({
                     playlistName,
