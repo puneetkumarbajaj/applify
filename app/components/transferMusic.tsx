@@ -31,6 +31,7 @@ export function TransferMusic (props: ITransferMusicProps) {
         const playlistId = playlistLink?.split('playlist/')[1].split('?')[0];
         const codeArray = await getIsrcOfPlaylist(props.session?.accessToken ?? '', playlistId);
         setIsrcArray(codeArray);
+        console.log('ISRCs fetched:', codeArray);
         fetchSongsByISRC();
         createPlaylistOnAppleMusic('Transferred Playlist', songs);
     }
@@ -42,10 +43,11 @@ export function TransferMusic (props: ITransferMusicProps) {
                     musicKit?.api.songs(['?filter[isrc]=' + isrc])
                 );
                 const results = await Promise.all(promises);
-                
+                console.log('Results:', results);
                 // Process results
                 const fetchedSongs = results.flat();
                 setSongs(fetchedSongs ?? []);
+                console.log('Songs fetched:', fetchedSongs);
             } catch (error) {
                 console.error("Error fetching songs by ISRC:", error);
             }
