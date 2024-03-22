@@ -5,6 +5,7 @@ import { IoIosPlay, IoIosRepeat, IoIosVolumeHigh, IoIosVolumeLow, IoIosVolumeOff
 import { Player } from './player';
 import { Slider } from '@/components/ui/slider';
 import { Avatar } from '@/components/ui/avatar';
+import { TransferMusic } from '@/app/components/transferMusic';
 
 export interface IHeaderProps {
 }
@@ -21,6 +22,9 @@ export function Header (props: IHeaderProps) {
       </div>
       <Player />
       <div className='flex justify-between items-center'>
+        <div className='rounded-full bg-black bg-opacity-50 w-8 h-8 flex items-center justify-center'>
+            <TransferMusic />
+        </div>
         <IoIosVolumeHigh className='text-5xl mx-2'/>
         <Slider />
       </div>

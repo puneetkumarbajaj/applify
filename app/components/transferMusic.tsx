@@ -16,19 +16,58 @@ import { getIsrc, getIsrcOfPlaylist } from '../api/Spotifymethods';
 import { Session } from 'next-auth';
 
 export interface ITransferMusicProps {
-    session: Session | null;
+    session?: Session | null;
 }
 
 export function TransferMusic (props: ITransferMusicProps) {
     const [isrcArray, setIsrcArray] = React.useState([]);
     const [playlistLink, setPlaylistLink] = React.useState('');
+    const [songs, setSongs] = React.useState<MusicKit.Songs[]>([]);
+
+    const musicKit = MusicKit.getInstance();
     
     async function getIsrcArray(playlistLink: string) {
         const playlistId = playlistLink?.split('playlist/')[1].split('?')[0];
         const codeArray = await getIsrcOfPlaylist(props.session?.accessToken ?? '', playlistId);
         setIsrcArray(codeArray);
-        console.log(isrcArray);
+        fetchSongsByISRC();
+        createPlaylistOnAppleMusic('Transferred Playlist', songs);
     }
+
+    const fetchSongsByISRC = async () => {
+            try {
+                // Convert ISRCs to MusicKit catalog search queries
+                const promises = isrcArray.map(isrc =>
+                    musicKit.api.songs(['?filter[isrc]=' + isrc])
+                );
+                const results = await Promise.all(promises);
+                
+                // Process results
+                const fetchedSongs = results.flat(); // Assuming each promise resolves to an array of songs
+                setSongs(fetchedSongs);
+            } catch (error) {
+                console.error("Error fetching songs by ISRC:", error);
+            }
+        };
+
+        const createPlaylistOnAppleMusic = async (playlistName: any, tracks: any) => {
+            // Replace '/api/createPlaylist' with your actual API endpoint
+            fetch('/api/createPlaylist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Music-User-Token': musicKit.musicUserToken,
+                },
+                body: JSON.stringify({
+                    playlistName,
+                    description: "Playlist transferred from Spotify.",
+                    tracks,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => console.log('Playlist created:', data))
+            .catch(error => console.error('Error creating playlist:', error));
+        };
 
   return (
     <div>
