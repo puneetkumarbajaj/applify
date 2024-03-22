@@ -31,9 +31,11 @@ export function TransferMusic (props: ITransferMusicProps) {
         const playlistId = playlistLink?.split('playlist/')[1].split('?')[0];
         const codeArray = await getIsrcOfPlaylist(props.session?.accessToken ?? '', playlistId);
         setIsrcArray(codeArray);
-        console.log('ISRCs fetched:', codeArray);
-        fetchSongsByISRC();
-        createPlaylistOnAppleMusic('Transferred Playlist', songs);
+        console.log('ISRCs fetched:', isrcArray);
+        if(isrcArray.length > 0){
+            fetchSongsByISRC()
+            createPlaylistOnAppleMusic('Transferred Playlist', songs);
+        }
     }
 
     const fetchSongsByISRC = async (storefront = 'us') => {
