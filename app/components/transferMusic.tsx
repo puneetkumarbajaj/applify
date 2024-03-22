@@ -31,27 +31,33 @@ export function TransferMusic (props: ITransferMusicProps) {
         const playlistId = playlistLink?.split('playlist/')[1].split('?')[0];
         const codeArray = await getIsrcOfPlaylist(props.session?.accessToken ?? '', playlistId);
         setIsrcArray(codeArray);
-        console.log('ISRCs fetched:', isrcArray);
-        if(isrcArray.length > 0){
-            fetchSongsByISRC()
-            createPlaylistOnAppleMusic('Transferred Playlist', songs);
-        }
+        console.log('codeArray:', codeArray);
     }
+
+    React.useEffect(() => {
+        if (isrcArray.length > 0) {
+            console.log('ISRC array:', isrcArray);
+            fetchSongsByISRC().then(() => {
+                // After fetching songs, create the playlist on Apple Music
+                createPlaylistOnAppleMusic('Transferred Playlist', songs);
+            });
+        }
+    }, [isrcArray]); // Trigger actions when isrcArray is updated
 
     const fetchSongsByISRC = async (storefront = 'us') => {
         try {
-          // Join the ISRC array into a comma-separated string
-          const isrcs = isrcArray.join(',');
-          const response = await fetch(`/api/fetchByISRC?isrcs=${isrcs}&storefront=${storefront}`);
-          if (!response.ok) throw new Error('Network response was not ok');
-      
-          const data = await response.json();
-          console.log('Songs fetched:', data);
-          // Process the data as needed
+            const isrcs = isrcArray.join(',');
+            const response = await fetch(`/api/fetchByISRC?isrcs=${isrcs}&storefront=${storefront}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+    
+            const data = await response.json();
+            console.log('Songs fetched:', data);
+            setSongs(data);
+            console.log('song', songs) // Assuming the data format is correct for your needs
         } catch (error) {
-          console.error("Error fetching songs by ISRC:", error);
+            console.error("Error fetching songs by ISRC:", error);
         }
-      };
+    };
 
         const createPlaylistOnAppleMusic = async (playlistName: any, tracks: any) => {
             fetch('/api/createApplePlaylist', {
