@@ -44,7 +44,7 @@ export function TransferMusic (props: ITransferMusicProps) {
                 const results = await Promise.all(promises);
                 
                 // Process results
-                const fetchedSongs = results.flat(); // Assuming each promise resolves to an array of songs
+                const fetchedSongs = results.flat();
                 setSongs(fetchedSongs ?? []);
             } catch (error) {
                 console.error("Error fetching songs by ISRC:", error);
@@ -52,8 +52,7 @@ export function TransferMusic (props: ITransferMusicProps) {
         };
 
         const createPlaylistOnAppleMusic = async (playlistName: any, tracks: any) => {
-            // Replace '/api/createPlaylist' with your actual API endpoint
-            fetch('/api/createPlaylist', {
+            fetch('/api/createApplePlaylist', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
