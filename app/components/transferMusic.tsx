@@ -36,22 +36,20 @@ export function TransferMusic (props: ITransferMusicProps) {
         createPlaylistOnAppleMusic('Transferred Playlist', songs);
     }
 
-    const fetchSongsByISRC = async () => {
-            try {
-                // Convert ISRCs to MusicKit catalog search queries
-                const promises = isrcArray.map(isrc =>
-                    musicKit?.api.songs(['?filter[isrc]=' + isrc])
-                );
-                const results = await Promise.all(promises);
-                console.log('Results:', results);
-                // Process results
-                const fetchedSongs = results.flat();
-                setSongs(fetchedSongs ?? []);
-                console.log('Songs fetched:', fetchedSongs);
-            } catch (error) {
-                console.error("Error fetching songs by ISRC:", error);
-            }
-        };
+    const fetchSongsByISRC = async (storefront = 'us') => {
+        try {
+          // Join the ISRC array into a comma-separated string
+          const isrcs = isrcArray.join(',');
+          const response = await fetch(`/api/fetchByISRC?isrcs=${isrcs}&storefront=${storefront}`);
+          if (!response.ok) throw new Error('Network response was not ok');
+      
+          const data = await response.json();
+          console.log('Songs fetched:', data);
+          // Process the data as needed
+        } catch (error) {
+          console.error("Error fetching songs by ISRC:", error);
+        }
+      };
 
         const createPlaylistOnAppleMusic = async (playlistName: any, tracks: any) => {
             fetch('/api/createApplePlaylist', {

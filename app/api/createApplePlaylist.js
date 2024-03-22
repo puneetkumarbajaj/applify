@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const apple = axios.create({
       baseURL: 'https://api.music.apple.com/v1',
       headers: {
-        'Authorization': `Bearer ${process.env.APPLE_MUSIC_DEVELOPER_TOKEN}`,
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_APPLE_SECRET}`,
         'Music-User-Token': musicUserToken
       }
     });
