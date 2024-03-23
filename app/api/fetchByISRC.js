@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         'filter[isrc]': isrcs,
       },
     });
-
+    console.log('response fetchISRC.js', response);
     return res.status(200).json(response.data);
   } catch (error) {
     console.error('Failed to fetch songs from Apple Music:', error);
