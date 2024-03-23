@@ -47,7 +47,7 @@ export function TransferMusic (props: ITransferMusicProps) {
     const fetchSongsByISRC = async (storefront = 'us') => {
         try {
             const isrcs = isrcArray.join(',');
-            const response = await fetch(`/api/fetchByISRC?isrcs=${isrcs}&storefront=${storefront}`);
+            const response = await fetch(`/api/fetchByISRC?isrcs=${isrcArray[0]}&storefront=${storefront}`);
             if (!response.ok) throw new Error('Network response was not ok');
     
             const data = await response.json();
