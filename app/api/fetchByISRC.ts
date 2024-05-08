@@ -1,13 +1,14 @@
-// pages/api/fetchByISRC.js
+import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
     return res.status(405).end('Method Not Allowed');
   }
 
   const { isrcs, storefront } = req.query;
-  if (!isrcs || !storefront) {
+
+  if (typeof isrcs !== 'string' || typeof storefront !== 'string') {
     return res.status(400).json({ error: 'Missing required query parameters: isrcs, storefront' });
   }
 
@@ -21,10 +22,18 @@ export default async function handler(req, res) {
         'filter[isrc]': isrcs,
       },
     });
-    console.log('response fetchISRC.js', response);
+
+    console.log('API URL:', appleMusicApiUrl);
+    console.log('Request Parameters:', response.config.params);
+    console.log('Response Data:', response.data);
+    
     return res.status(200).json(response.data);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to fetch songs from Apple Music:', error);
+    console.log('Failed URL:', appleMusicApiUrl);
+    console.log('HTTP Status:', error.response?.status);
+    console.log('Error Message:', error.message);
+    
     return res.status(error.response?.status || 500).json({ error: error.message });
   }
 }
